@@ -7,6 +7,11 @@ Vue.use(VueRouter)
 const routes = [{
         path: '/',
         name: 'Home',
+        component: Home,
+    },
+    {
+        name: 'random',
+        path: 'random',
         component: Home
     },
     {
