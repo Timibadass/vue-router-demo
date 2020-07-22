@@ -2,6 +2,8 @@
 	<div class="home">
 		<p v-if="loading" class="post--empty">Loading....</p>
 		<ol v-else>
+			<!-- add this text too -->
+			<p v-if="guest">Hi Guest</p>
 			<li v-for="post in posts" :key="post.id">
 				<router-link
 					:to="{ name: 'Post', params: { id: post.id, post: post } }"
@@ -21,8 +23,27 @@
 		data() {
 			return {
 				posts: null,
+				// add this property
+				guest: false,
 				loading: false,
 			};
+		},
+		beforeRouteEnter(to, from, next) {
+			if (to.matched.some((record) => record.meta.requiresAuth)) {
+				// this route requires auth, check if logged in
+				// if not, display guest greeting.
+				const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
+
+				if (!loggedIn) {
+					next((vm) => {
+						vm.guest = true;
+					});
+				} else {
+					next();
+				}
+			} else {
+				next(); // make sure to always call next()!
+			}
 		},
 		mounted() {
 			this.getPosts();

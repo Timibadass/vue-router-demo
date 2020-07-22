@@ -15,6 +15,9 @@
 				transitionName: "slide-fade",
 			};
 		},
+		mounted() {
+			localStorage.setItem("loggedIn", false);
+		},
 		watch: {
 			$route(to, from, params) {
 				const toParam = to.params && to.params.id ? to.params.id : 0;
