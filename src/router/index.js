@@ -8,6 +8,17 @@ const routes = [{
         path: '/',
         name: 'Home',
         component: Home,
+        // add meta to this route
+        meta: {
+            requiresAuth: true
+        },
+        beforeEnter: (to, from, next) => {
+            if (to.name === 'Home') {
+                console.log('Per-Route navigation guard ti wa online');
+
+                next()
+            } else next()
+        }
     },
     {
         path: '/:id',
