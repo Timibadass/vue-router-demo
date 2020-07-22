@@ -29,11 +29,18 @@
 			};
 		},
 		beforeRouteEnter(to, from, next) {
+			axios
+				.get("https://jsonplaceholder.typicode.com/posts")
+				.then((res) => {
+					next((vm) => vm.fetchData(res));
+				})
+				.catch((err) => {
+					console.error(err);
+				});
 			if (to.matched.some((record) => record.meta.requiresAuth)) {
 				// this route requires auth, check if logged in
 				// if not, display guest greeting.
 				const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
-
 				if (!loggedIn) {
 					next((vm) => {
 						vm.guest = true;
@@ -46,9 +53,13 @@
 			}
 		},
 		mounted() {
-			this.getPosts();
+			// this.getPosts();
 		},
 		methods: {
+			fetchData(res) {
+				let post = res.data;
+				this.posts = post;
+			},
 			async getPosts() {
 				this.loading = true;
 				try {
