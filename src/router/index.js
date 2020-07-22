@@ -21,9 +21,18 @@ const routes = [{
         }
     },
     {
+        path: '/login',
+        name: 'login',
+        component: () =>
+            import ( /* webpackChunkName: "post" */ '../views/guest.vue')
+
+    }, {
         path: '/:id',
         name: 'Post',
         props: true,
+        meta: {
+            requiresAuth: true
+        },
         component: () =>
             import ( /* webpackChunkName: "post" */ '../views/Post.vue')
     }
@@ -39,6 +48,24 @@ const router = new VueRouter({
         } else {
             return { x: 0, y: 0 }
         }
+    }
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        // this route requires auth, check if logged in
+        // if not, display guest greeting.
+        const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
+
+        if (!loggedIn) {
+            next({
+                path: '/login'
+            });
+        } else {
+            next();
+        }
+    } else {
+        next(); // make sure to always call next()!
     }
 })
 
