@@ -10,11 +10,6 @@ const routes = [{
         component: Home,
     },
     {
-        name: 'random',
-        path: 'random',
-        component: Home
-    },
-    {
         path: '/:id',
         name: 'Post',
         props: true,
