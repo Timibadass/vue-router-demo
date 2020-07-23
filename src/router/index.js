@@ -24,7 +24,7 @@ const routes = [{
         path: '/login',
         name: 'login',
         component: () =>
-            import ( /* webpackChunkName: "post" */ '../views/guest.vue')
+            import ( /* webpackChunkName: "auth" */ '../views/guest.vue')
 
     }, {
         path: '/:id',
